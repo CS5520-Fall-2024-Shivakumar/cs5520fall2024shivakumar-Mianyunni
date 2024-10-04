@@ -40,4 +40,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("net.objecthunter:exp4j:0.4.8")
+
 }
