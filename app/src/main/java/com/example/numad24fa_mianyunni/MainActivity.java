@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 找到 "About Me" 按钮
         Button aboutMeButton = findViewById(R.id.about_me_button);
-        // 设置点击事件监听器，显示 Toast 消息
+        // 设置点击事件监听器，跳转到 AboutMeActivity
         aboutMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Mianyun Ni: ni.mi@northeastern.edu", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, AboutMeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -44,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CalcActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 找到 "Contacts Collector" 按钮
+        Button contactsCollectorButton = findViewById(R.id.contactsCollectorButton);
+        // 设置点击事件监听器，跳转到 ContactsActivity
+        contactsCollectorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ContactsActivity.class);
                 startActivity(intent);
             }
         });
