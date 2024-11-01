@@ -43,5 +43,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("net.objecthunter:exp4j:0.4.8")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("com.google.code.gson:gson:2.8.8")
 
 }

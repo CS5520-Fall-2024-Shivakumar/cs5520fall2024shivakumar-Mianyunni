@@ -1,7 +1,9 @@
 package com.example.numad24fa_mianyunni;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +41,9 @@ public class ContactsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        contactList = new ArrayList<>();
+        // 加载联系人列表
+        loadContacts();
+
         contactAdapter = new ContactAdapter(contactList);
         recyclerView.setAdapter(contactAdapter);
 
@@ -47,6 +54,12 @@ public class ContactsActivity extends AppCompatActivity {
                 showAddContactDialog();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveContacts(); // 保存联系人列表到 SharedPreferences
     }
 
     @Override
@@ -110,5 +123,30 @@ public class ContactsActivity extends AppCompatActivity {
                         contactAdapter.notifyItemRemoved(contactList.size());
                     }
                 }).show();
+    }
+
+    // 保存联系人列表到 SharedPreferences
+    private void saveContacts() {
+        SharedPreferences sharedPreferences = getSharedPreferences("contacts_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(contactList); // 将列表转换为 JSON 格式
+        editor.putString("contacts_list", json);
+        editor.apply();
+    }
+
+    // 从 SharedPreferences 加载联系人列表
+    private void loadContacts() {
+        SharedPreferences sharedPreferences = getSharedPreferences("contacts_prefs", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("contacts_list", null);
+
+        if (json != null) {
+            Type type = new TypeToken<List<Contact>>() {}.getType();
+            contactList = gson.fromJson(json, type); // 将 JSON 转换回 List<Contact>
+        } else {
+            contactList = new ArrayList<>(); // 如果没有数据，则创建一个新的列表
+        }
     }
 }
